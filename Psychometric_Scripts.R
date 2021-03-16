@@ -21,29 +21,26 @@ SWtest=function(data, x){
 
 #########VIF working scripts below######
 
+#install.packages("car")
+#library(car)
 
+#temp<-Scored_data[,grep("_tscore",names(Scored_data))]
 
+#temp<-cbind("gender"=Data$gender,temp)
 
-install.packages("car")
-library(car)
+#temp2=lm(gender~., temp)
 
-temp<-Scored_data[,grep("_tscore",names(Scored_data))]
+#vif(temp2)
 
-temp<-cbind("gender"=Data$gender,temp)
+#stdcoeff(lm(gender~.,temp))
 
-temp2=lm(gender~., temp)
-
-vif(temp2)
-
-stdcoeff(lm(gender~.,temp))
-
-MOD=temp2
-stdcoeff <- function (MOD)  {
-  b <- summary(MOD)$coef[-1, 1] ;
-  sx <- sd(MOD$model[-1]);     
-  sy <- sd(MOD$model[1]);     
-  beta <- b * sx/sy   ;  return(beta) }
-?grep
+#MOD=temp2
+#stdcoeff <- function (MOD)  {
+#  b <- summary(MOD)$coef[-1, 1] ;
+#  sx <- sd(MOD$model[-1]);     
+#  sy <- sd(MOD$model[1]);     
+#  beta <- b * sx/sy   ;  return(beta) }
+#?grep
 
 
 ########################################
