@@ -19,31 +19,11 @@ SWtest=function(data, x){
     as.character(z);}))}
 
 
-#########VIF working scripts below######
-
-#install.packages("car")
-#library(car)
-
-#temp<-Scored_data[,grep("_tscore",names(Scored_data))]
-
-#temp<-cbind("gender"=Data$gender,temp)
-
-#temp2=lm(gender~., temp)
-
-#vif(temp2)
-
-#stdcoeff(lm(gender~.,temp))
-
-#MOD=temp2
-#stdcoeff <- function (MOD)  {
-#  b <- summary(MOD)$coef[-1, 1] ;
-#  sx <- sd(MOD$model[-1]);     
-#  sy <- sd(MOD$model[1]);     
-#  beta <- b * sx/sy   ;  return(beta) }
-#?grep
-
-
-########################################
+#########VIF scripts below######
+  VIF<-function(LM){
+    list_of_dvs=names(LM$model)[!(names(LM$model) %in% as.character(LM$terms[[2]]))]
+      sapply(list_of_dvs, simplify=TRUE, function(y)
+        {(1/(1-summary(lm(formula(paste0(y,"~ .")), data=temp))$r.squared))})}
 
 
 thetaSE.eap<-function(ipar,resp.data,maxCat=5,model=1,minTheta=-4.0,maxTheta=4.0,inc=0.1,prior.dist=1,prior.mean=0.0,prior.sd=1.0,D=1.0) {
