@@ -12,6 +12,12 @@ ceiling_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){round
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
 
+
+Code_to_SPSS_Label <- function(Data){return(as.factor(names(attributes(Data)$labels)[match(Data, attributes(Data)$labels)]))}
+
+
+
+
 SWtest=function(data, x){
   return(sapply(x, simplify=TRUE, function(y){
     z=shapiro.test(Scored_data$Anxiety_tscore)$p.value;
