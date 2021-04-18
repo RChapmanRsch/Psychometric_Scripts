@@ -12,10 +12,20 @@ ceiling_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){round
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
 
-
 Code_to_SPSS_Label <- function(Data){return(as.factor(names(attributes(Data)$labels)[match(Data, attributes(Data)$labels)]))}
 
-
+Freq_Prop_Table <- function(Data)
+{
+  Freq_Tbl<-table(Data, useNA="always")
+  Prop_Tbl<-round(prop.table(Freq_Tbl),2)*100
+  Freq_Prop_Tbl<-Freq_Tbl
+  for(i in 1:length(Freq_Prop_Tbl))
+  {
+    Freq_Prop_Tbl[i]<-paste0(Freq_Tbl[i], "(",Prop_Tbl[i],"%)")
+  }
+  
+  return(Freq_Prop_Tbl)
+}
 
 
 SWtest=function(data, x){
