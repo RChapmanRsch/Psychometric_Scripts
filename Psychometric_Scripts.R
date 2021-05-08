@@ -281,4 +281,24 @@ AlphaAlphaDropOmegaHECV=function(Data){
   "ECV"=round(OmegaECV$ECV,2)))
 }
 
+#Function to calculate n, mean, sd and Cohen's by known group
+KG_MeanSDES = function(KG_Data, KG_By){
 
+  
+  
+  KG_Out=data.frame(matrix(NA,nrow=length(levels(as.factor(KG_By))),ncol=0))
+  if(!is.data.frame(KG_Data)){KG_Data=as.data.frame(KG_Data)}  
+  for(Scale in names(KG_Data)){
+    MeanSDES=data.frame(
+      "n"=tapply(KG_Data[,Scale], KG_By, function(x) length(na.omit(x))),
+      "mean"=tapply(KG_Data[,Scale], KG_By, mean,na.rm=TRUE),
+      "sd"=tapply(KG_Data[,Scale], KG_By, sd,na.rm=TRUE),
+      "es"=NA)
+    for(row in 1:(nrow(MeanSDES))){
+      if(row!=nrow(MeanSDES)){MeanSDES$es[row]=
+        (MeanSDES$mean[row]-MeanSDES$mean[row+1])/sqrt(
+        ((MeanSDES$n[row]-1)*MeanSDES$sd[row]^2+(MeanSDES$n[row+1]-1)*MeanSDES$sd[row+1]^2)/
+        (MeanSDES$n[row]+MeanSDES$n[row+1]-2))}} 
+    names(MeanSDES)=paste(Scale,names(MeanSDES),sep=".")
+    KG_Out=data.frame(KG_Out,MeanSDES)}
+  return(KG_Out)}
