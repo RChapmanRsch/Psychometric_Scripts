@@ -271,4 +271,14 @@ RSSS_scoring_wrapper<-function(IPAR, Variables, Data)
   
 }
 
+AlphaAlphaDropOmegaHECV=function(Data){
+  Alpha=tryCatch(alpha(Data), error=function(e){list("total"=list("std.alpha"=NA),"alpha.drop"=list("std.alpha"=NA))})
+  OmegaECV=tryCatch(omegah(Data, plot=FALSE), error=function(e){list("omega_h"=NA,"ECV"=NA)})
+  return(c(
+  "Alpha"=round(Alpha$total$std.alpha,2),
+  "AlphaDrop"=round(range(Alpha$alpha.drop$std.alpha),2),
+  "OmegaH"=round(OmegaECV$omega_h,2),
+  "ECV"=round(OmegaECV$ECV,2)))
+}
+
 
