@@ -1,0 +1,68 @@
+#This script contains a function, 'Calculate_Response_Probabilities', which calculates
+#response probabilities for Graded Response Model calibration statistics across theta
+#and returns a list object with probabilities per response option per theta increment
+
+#function 'Calculate_Response_Probabilities' requires an item parameter dataframe 'IPAR_dataframe'
+#'IPAR_dataframe' is a dataframe with names:
+#'a' for discrimination/slope parameters
+#'cb1' through 'cb5' for threshold parameters, where the cb number represents the threshold number
+#'NCAT' for number of response categories (1+ number of thresholds). 
+#calculation assumes collapsed categories/response options, if applicable  
+
+Calculate_Response_Probabilities<-function(IPAR_dataframe, Tscore_range=NA, Theta_range=NA){
+  
+  #users can set their own Theta and Tscore ranges for calculation
+  #otherwise, function will assume PROMIS Standard:
+  #-4 to 4 theta or 10-90 for calculation
+  if(is.na(Tscore_range) & is.na(Theta_range)){
+  Tscore_range=c(10,90)
+  Theta_range=c(-4,4)}
+  else{
+    if(!is.na(Tscore_range)){Theta_range<-c((min(Tscore_range)-50)/10,(max(Tscore_range)-50)/10)}
+    if(!is.na(Theta_range & is.na(Tscore_range))){Tscore_range<-c((min(Theta_range)+50)/10,(max(Theta_range)+50)/10)}
+  }
+  
+  #create Theta and Tscore vectors, assuming  .1 theta increments or 1 tscore points
+  #could make increments adjustable... but not sure anyone would use that option
+  Theta<-seq(min(Theta_range), max(Theta_range), .1)
+  Tscore<-seq(min(Tscore_range), max(Tscore_range), 1)
+  
+  #create the 'Response_Probabilities' list object, to be populated with each item's
+  #probabilities per response options (e.g., 1:5) per theta/Tscore increments
+  Response_Probabilities<-list()
+  
+  #for each item index 'm' in the rows of the 'IPAR_dataframe' 
+  for(m in 1:nrow(IPAR_dataframe))
+  {
+    #create a subset object 'IPAR' for each item's slope/threshold/number of categories parameters
+    IPAR<-IPAR_dataframe[m,]
+    #create a matrix of probabilities across theta for all of response options in item 'm'  
+    ThetaProbMatrix <- matrix(nrow = length(Theta), ncol = (IPAR$NCAT-1)) 
+    #i is the rows, which are theta increments
+    for (i in 1:length(Theta)) {
+      #j is columns or thresholds
+      for (j in 1:(IPAR$NCAT-1)) {
+        #calculate each threhold's probability using the graded response model formula
+        ThetaProbMatrix[i, j] <- exp(IPAR$a * (Theta[i] - IPAR[,paste0("cb",j)])) / (1 + exp(IPAR$a * (Theta[i] - IPAR[,paste0("cb",j)])))} } 
+    
+    #now we need to transform the threshold probabilties into response option probabilities...
+        #add a column onto the probability matrix, representing the floor response option probability, 1-ThetaProbMatrix[,1]
+        ThetaProbMatrix <- cbind((1 - ThetaProbMatrix[, 1]), ThetaProbMatrix)
+    #for the middle columns in the matrix, represented 'k' index, subtract adjacent probabilities from each other
+    for(k in 2:(IPAR$NCAT-1)){ThetaProbMatrix[,k]<-ThetaProbMatrix[,k]-ThetaProbMatrix[,k+1]}
+    #the ceiling response category is subtracted by zero, or it's the same as the highest threshold probabilities (no transformation needed) 
+    
+    #ThetaProbMatrix now represents response option probabilities across theta
+    
+    #create a dataframe, 'ThetaProbMatrix_df' from the matrix of 'ThetaProbMatrix' for further manipulation
+    ThetaProbMatrix_df<-as.data.frame(ThetaProbMatrix)
+    ThetaProbMatrix_df[ThetaProbMatrix_df<0]<-0 #in case there are negative probabilities- it has happened
+    
+    names(ThetaProbMatrix_df)<-c(1:IPAR$NCAT); #name the 'ThetaProbMatrix_df' columns according to the response option number, e.g., 1:5
+    rownames(ThetaProbMatrix_df)<-Tscore #name the 'ThetaProbMatrix_df' rows according to the Tscore increments  
+    #add the calculated response option probabilities for item 'm' in the 'Response_Probabilities' list object
+    Response_Probabilities[[rownames(IPAR_dataframe)[m]]]<-ThetaProbMatrix_df 
+  }
+  return(Response_Probabilities) #function returns the 'Response_Probabilities' list object for all items in IPAR_dataframe
+}
+
