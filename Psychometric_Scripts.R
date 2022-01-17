@@ -10,6 +10,10 @@ mean_sd_range=function(data, x){return(sapply(x,simplify=TRUE,function(y){paste0
 	round(mean(data[,y],na.rm=TRUE),2)," (",round(sd(data[,y],na.rm=TRUE),2),"), ",
     	as.character(round(min(data[,y],na.rm=TRUE),2)),"-",as.character(round(max(data[,y],na.rm=TRUE),2)))}))}
 
+categical_n_percent=function(data, x){  return(sapply(x,simplify=TRUE,function(y){data.frame(matrix(
+	paste0(table(data[,y])," (",round(prop.table(table(data[,y]))*100,0),"%)"),
+	 nrow=1, dimnames = list(NA,names(table(data[,y])))))}))}
+
 floor_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){round(sum(data[,y] %in% range(data[,y], na.rm=TRUE)[1])/length(data[,y]),2)}))}
 
 ceiling_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){round(sum(data[,y] %in% range(data[,y], na.rm=TRUE)[2])/length(data[,y]),2)}))}
