@@ -4,6 +4,10 @@ missing_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){sum(i
 
 length_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){length(data[,y])}))}
 
+response_frequency_list=function(data, x){
+  range=min(data[,x]):max(data[,x])
+  return(t(sapply(x, simplify=TRUE, function(y){table(factor(data[,y], levels=range))})))}
+
 mean_sd=function(data, x){return(sapply(x,simplify=TRUE,function(y){paste0(round(mean(data[,y],na.rm=T),2),"(",round(sd(data[,y],na.rm=T),2),")")}))}
 
 mean_sd_range=function(data, x){return(sapply(x,simplify=TRUE,function(y){paste0(
