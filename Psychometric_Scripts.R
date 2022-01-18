@@ -22,9 +22,9 @@ floor_list=function(data, x, min=NA){return(sapply(x, simplify=TRUE, function(y)
 	if(is.na(min)){min=range(data[,y], na.rm=TRUE)[1]}
 	round(sum(data[,y] %in% min)/length(data[,y]),2)}))}
 
-ceiling_list=function(data, x, max=NA){
+ceiling_list=function(data, x, max=NA){return(sapply(x, simplify=TRUE, function(y){
 	if(is.na(max)){max=range(data[,y], na.rm=TRUE)[1]}
-	return(sapply(x, simplify=TRUE, function(y){round(sum(data[,y] %in% max)/length(data[,y]),2)}))}
+	round(sum(data[,y] %in% max)/length(data[,y]),2)}))}
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
 
