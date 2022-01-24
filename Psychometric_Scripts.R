@@ -18,12 +18,13 @@ categical_n_percent=function(data, x){  return(sapply(x,simplify=TRUE,function(y
 	paste0(table(data[,y])," (",round(prop.table(table(data[,y]))*100,0),"%)"),
 	 nrow=1, dimnames = list(NA,names(table(data[,y])))))}))}
 
-floor_list=function(data, x, min=NA){return(sapply(x, simplify=TRUE, function(y){
-	if(is.na(min)){min=range(data[,y], na.rm=TRUE)[1]}
-	round(sum(data[,y] %in% min)/length(data[,y]),2)}))}
+floor_list=function(data, x, min=NA, collapsed=NA){	
+	return(sapply(x, simplify=TRUE, function(y){
+		if(is.na(min) | x %in% collapsed){min=range(data[,y], na.rm=TRUE)[1]}
+		round(sum(data[,y] %in% min)/length(data[,y]),2)}))}
 
-ceiling_list=function(data, x, max=NA){return(sapply(x, simplify=TRUE, function(y){
-	if(is.na(max)){max=range(data[,y], na.rm=TRUE)[2]}
+ceiling_list=function(data, x, max=NA, collapsed=NA){return(sapply(x, simplify=TRUE, function(y){
+	if(is.na(max) | x %in% collapsed){max=range(data[,y], na.rm=TRUE)[2]}
 	round(sum(data[,y] %in% max)/length(data[,y]),2)}))}
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
