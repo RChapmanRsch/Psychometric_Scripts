@@ -7,7 +7,7 @@ length_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){length
 response_frequency_list=function(data, x, min=NA, max=NA){
 	if(all(is.na(data[,x]))){range=min(min):max(max)}
 	else{range=min(data[,x], na.rm=TRUE):max(data[,x], na.rm=TRUE)}
-  return(t(sapply(x, simplify=TRUE, function(y){table(factor(data[,y], levels=range)))))}}
+  return(t(sapply(x, simplify=TRUE, function(y){table(factor(data[,y], levels=range))))}}
 
 mean_sd=function(data, x){return(sapply(x,simplify=TRUE,function(y){paste0(round(mean(data[,y],na.rm=T),2),"(",round(sd(data[,y],na.rm=T),2),")")}))}
 
