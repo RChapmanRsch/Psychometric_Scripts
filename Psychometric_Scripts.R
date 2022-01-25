@@ -5,7 +5,7 @@ missing_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){sum(i
 length_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){length(data[,y])}))}
 
 response_frequency_list=function(data, x, min=NA, max=NA){
-	if(all(is.na(data[,x]))){range=min(min):max(max)}
+	if(!is.na(min) & !is.na(max)){range=min(min):max(max)}
 	else{range=min(data[,x], na.rm=TRUE):max(data[,x], na.rm=TRUE)}
   return(t(sapply(x, simplify=TRUE, function(y){table(factor(data[,y], levels=range))})))}
 
