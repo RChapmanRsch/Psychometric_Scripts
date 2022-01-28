@@ -2,7 +2,7 @@ unique_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){toStri
 
 missing_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){sum(is.na(data[,y]))}))}
 
-length_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){length(data[,y])}))}
+length_list=function(data, x){return(sapply(x, simplify=TRUE, function(y){sum(is.na(data[,y]))}))}
 
 response_frequency_list=function(data, x, min=NA, max=NA){
 	if(!is.na(min) & !is.na(max)){range=min(min):max(max)}
