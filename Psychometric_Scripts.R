@@ -35,7 +35,7 @@ item_change_vector=function(data){
 		temp=diff(as.numeric(temp)) #has problems with numeric??
 		temp[unique(c(which(is.na(data[-1])), which(is.na(data[-1]))+1))]=NA
 		temp
-		}
+		}}
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
 
