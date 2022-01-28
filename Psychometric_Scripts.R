@@ -28,14 +28,15 @@ ceiling_list=function(data, x, max=NA, collapsed=NA){return(sapply(x, simplify=T
 	if(is.na(max) | y %in% collapsed){max=range(data[,y], na.rm=TRUE)[2]}
 	round(sum(data[,y] %in% max)/length(data[,y]),2)}))}
 
-item_change_vector=function(data){
-	  apply(data, 1, function(x){
-	    temp=as.matrix(data)
+item_change=function(data){
+	  return(
+	  t(apply(data, 1, function(x){
+	    temp=x
 	    temp[is.na(temp)]=0
 	    temp=diff(temp) 
-	    temp[unique(c(which(is.na(data[-1])), which(is.na(data[-1]))+1))]=NA
+	    temp[unique(c(which(is.na(x[-1])), which(is.na(x[-1]))+1))]=NA
 	    temp
-	  })}
+	  })))}
 
 Outlier_n=function(data,x){sapply(x, function(y){z=scale(data[,y]);return(sum(which(abs(z)>3.29)));})}
 
