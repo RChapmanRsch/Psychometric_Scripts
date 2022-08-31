@@ -10,15 +10,17 @@
 #rows for each person, with a simulated 'True' Tscore sampled based on a normal distribution 
 #columns for each item, with random data sampled from item response options and weighted by probabilities for a given 'True' Tscore
  
-Generate_Random_Data_from_Response_Probabilities<-function(N, Response_Probabilities, mean=50, sd=10)
+Generate_Random_Data_from_Response_Probabilities<-function(N, Response_Probabilities, mean=50, sd=10, ExistingData=NA)
 {
   #'N'= sample size to simulate for random dataset
   #'Response_Probabilities'= list object of each item's response option probabilities across theta/tscore
   #'mean'= mean of simulated 'True' Tscores
   #'sd'= standard deviation of simulated 'True' Tscores
   
-  #create simulated 'True' 'Tscore', based on normal distribution of Tscores  
-  Tscore<-round(rnorm(N, mean, sd))
+ if(is.na(ExistingData){
+   #create simulated 'True' 'Tscore', based on normal distribution of Tscores  
+   Tscore<-round(rnorm(N, mean, sd))}
+  else{Tscore=ExistingData}
   
   #trim 'True' Tscores that happen to fall outside of our measurement range of 10-90
   Tscore[which(Tscore<10)]<-10
