@@ -17,7 +17,7 @@ Generate_Random_Data_from_Response_Probabilities<-function(N, Response_Probabili
   #'mean'= mean of simulated 'True' Tscores
   #'sd'= standard deviation of simulated 'True' Tscores
   
- if(is.na(ExistingData)){
+ if(all(is.na(ExistingData))){
    #create simulated 'True' 'Tscore', based on normal distribution of Tscores  
    Tscore<-round(rnorm(N, mean, sd))}
   else{Tscore=ExistingData}
