@@ -2,7 +2,7 @@
 rsss<-function(ipar,model=1,minTheta=-4.0,maxTheta=4.0,inc=0.01,prior.mean=0.0,prior.sd=1.0,D=1.0,maxCat=5,minScore=1,Tscore=T){
 	NCAT<-ipar[,"NCAT"]
 	DISC<-ipar[,"a"]
-	CB<-ipar[paste("cb",1:(maxCat-1),sep="")]
+	CB<-ipar[,paste("cb",1:(maxCat-1),sep="")]
 
 	ni<-dim(ipar)[1] # number of items
 
